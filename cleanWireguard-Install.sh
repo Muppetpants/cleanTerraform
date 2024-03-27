@@ -52,7 +52,7 @@ function initialCheck() {
 }
 
 function installQuestions() {
-	echo "Welcome to the Busted WireGuard installer! This script is a fork of https://github.com/angristan/wireguard-install, however is stripped down to work with Ubuntu >=18. "
+	echo "Welcome to the Busted WireGuard installer! This script is a stripped down fork of https://github.com/angristan/wireguard-install to only work with Ubuntu >=18."
 	echo ""
 	echo "I need to ask you a few questions before starting the setup."
 	echo "You can keep the default options and just press enter if you are ok with them."
@@ -85,10 +85,9 @@ function installQuestions() {
 	done
 
 	# Generate random number within private ports range
-	RANDOM_PORT= 51820 
- 	#$(shuf -i49152-65535 -n1)
-	until [[ ${SERVER_PORT} =~ ^[0-9]+$ ]] && [ "${SERVER_PORT}" -ge 1 ] && [ "${SERVER_PORT}" -le 65535 ]; do
-		read -rp "Server WireGuard port [default: 51820]: " -e -i "${RANDOM_PORT}" SERVER_PORT
+	#RANDOM_PORT= 51820 #$(shuf -i49152-65535 -n1)
+	#until [[ ${SERVER_PORT} =~ ^[0-9]+$ ]] && [ "${SERVER_PORT}" -ge 1 ] && [ "${SERVER_PORT}" -le 65535 ]; do
+		read -rp "Server WireGuard port: " -e -i 51820 SERVER_PORT
 	#done
 
 	# Adguard DNS by default
@@ -167,10 +166,10 @@ PostDown = ip6tables -t nat -D POSTROUTING -o ${SERVER_PUB_NIC} -j MASQUERADE" >
 
 	# Enable routing on the server
 	echo "net.ipv4.ip_forward = 1
-net.ipv6.conf.all.forwarding=1" >/etc/sysctl.d/wg.conf
+net.ipv6.conf.all.forwarding = 1" >/etc/sysctl.d/wg.conf
 
 	echo "net.ipv4.ip_forward = 1
-net.ipv6.conf.all.forwarding=1" >/etc/sysctl.conf
+net.ipv6.conf.all.forwarding = 1" >/etc/sysctl.conf
 
 	sysctl --system
 
